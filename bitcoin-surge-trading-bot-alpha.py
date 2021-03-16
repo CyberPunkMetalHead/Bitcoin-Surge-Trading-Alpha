@@ -2,7 +2,12 @@ from datetime import datetime
 from itertools import count
 import time
 
+from spontit import SpontitResource
+
 import MetaTrader5 as mt5
+
+# account number and secret key for the spontitAPI
+resource = SpontitResource("ACCOUNT", "SECRET_KEY")
 
 CRYPTO = 'BTCUSD'
 
@@ -116,8 +121,9 @@ def trade():
                 print(f'1. order_send(): by {CRYPTO} {lot} lots at {price}')
 
                 if result.retcode != mt5.TRADE_RETCODE_DONE:
-                    print(f'2. order_send failed, retcode={result.retcode}')
-
+                    print(f'2. order_send failed, retcode={result.retcode}, Result: {result}')
+                else:
+                    resource.push(f'Opened BUY position on {symbol} at str(round(price, 4))')
                 #print the order result - anything else than retcode=10009 is an error in the trading request.
                 print(f'2. order_send done, {result}')
                 print(f'   opened position with POSITION_TICKET={result.order}')
