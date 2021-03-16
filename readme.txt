@@ -1,22 +1,11 @@
-The bot will be trading Bitcoin automatically if the price has increased by more than 3% in the last 10 minutes. 
-We will have a stop loss of 5% and take profit of 8%. 
-Later on, you can choose to further optimise your bot and include additional features such as trailing stop loss and close signals – but for now we’ll keep it simple.
 
-**USE CASES**
-Use with a demo account - use on a live account at your own risk
-Use to test different crypto markets
+For details on the crypto trading bot please read the readme.txt file in the main branch.
+This branch is only used to showcase a Push Notifications functionality for the bot. 
 
-**Prerequisites**
-Follow blog instructions on creating a demo environment.
-Additional resources needed (modules, software etc.) are also listed on the blog
+This branch makes use of the Spontit API in order to trigger a Push Notification to your mobile device every time the bot sucessfully places a BUY order.
+You will need a secret key along with the Spontit username in order for this to work.
+
+For more information on how it is integrated, please read the article:
 
 Go here: https://www.cryptomaton.org/2021/03/14/how-to-code-your-own-crypto-trading-bot-python/
-
-**Considerations**
-The bot can be adjusted to work with multiple cryptos at once. It currently requires a viable exit strategy.
-If you test this bot please let me know your results!
-Thanks for your interest in this project and good luck!
-
 Interested in colaborating? Get in touch. 
-
-
