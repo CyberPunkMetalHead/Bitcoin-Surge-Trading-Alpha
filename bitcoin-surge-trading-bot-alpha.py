@@ -123,7 +123,7 @@ def trade():
                 if result.retcode != mt5.TRADE_RETCODE_DONE:
                     print(f'2. order_send failed, retcode={result.retcode}, Result: {result}')
                 else:
-                    resource.push(f'Opened BUY position on {symbol} at str(round(price, 4))')
+                    resource.push(f'Opened BUY position on {symbol} at {str(round(price, 4))}')
                 #print the order result - anything else than retcode=10009 is an error in the trading request.
                 print(f'2. order_send done, {result}')
                 print(f'   opened position with POSITION_TICKET={result.order}')
