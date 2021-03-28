@@ -6,6 +6,13 @@ import MetaTrader5 as mt5
 
 CRYPTO = 'BTCUSD'
 
+# Price threshold (percentage)
+PRICE_THRESHOLD = 3
+# Stop loss (percentage)
+STOP_LOSS = 5
+# Take profit (percentage)
+TAKE_PROFIT = 8
+
 # connect to the trade account without specifying a password and a server
 mt5.initialize()
 
@@ -37,13 +44,13 @@ def get_dates():
 def get_data():
     """Download one day of 10 minute candles, along with the buy and sell prices for bitcoin."""
     utc_from, utc_to = get_dates()
-    return mt5.copy_rates_range('BTCUSD', mt5.TIMEFRAME_M10, utc_from, utc_to)
+    return mt5.copy_rates_range(CRYPTO, mt5.TIMEFRAME_M10, utc_from, utc_to)
 
 
 def get_current_prices():
     """Return current buy and sell prices."""
-    current_buy_price = mt5.symbol_info_tick("BTCUSD")[2]
-    current_sell_price = mt5.symbol_info_tick("BTCUSD")[1]
+    current_buy_price = mt5.symbol_info_tick(CRYPTO)[2]
+    current_sell_price = mt5.symbol_info_tick(CRYPTO)[1]
     return current_buy_price, current_sell_price
 
 
@@ -62,7 +69,7 @@ def trade():
     symbol_info = mt5.symbol_info(CRYPTO)
 
     # perform logic check
-    if difference > 3 :
+    if difference > PRICE_THRESHOLD :
         print(f'dif 1: {CRYPTO}, {difference}')
         # Pause for 8 seconds to ensure the increase is sustained
         time.sleep(8)
@@ -70,7 +77,7 @@ def trade():
         # calculate the difference once again
         candles = mt5.copy_rates_range(CRYPTO, mt5.TIMEFRAME_M10, utc_from, utc_to)
         difference = (candles['close'][-1] - candles['close'][-2]) / candles['close'][-2] * 100
-        if difference > 3:
+        if difference > PRICE_THRESHOLD:
             print(f'dif 2: {CRYPTO}, {difference}')
             price = mt5.symbol_info_tick(CRYPTO).bid
             print(f'{CRYPTO} is up {str(difference)}% in the last 5 minutes opening BUY position.')
@@ -93,8 +100,8 @@ def trade():
                 #this represents 5% Equity. Minimum order is 0.01 BTC. Increase equity share if retcode = 10014
                 lot = float(round(((equity / 20) / current_buy_price), 2))
                 # define stop loss and take profit
-                sl = price - (price * 5) / 100
-                tp = price + (price * 8) / 100
+                sl = price - (price * STOP_LOSS) / 100
+                tp = price + (price * TAKE_PROFIT) / 100
                 request = {
                     'action': mt5.TRADE_ACTION_DEAL,
                     'symbol': CRYPTO,
