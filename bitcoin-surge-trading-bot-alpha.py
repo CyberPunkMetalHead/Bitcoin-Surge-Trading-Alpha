@@ -13,6 +13,11 @@ STOP_LOSS = 5
 # Take profit (percentage)
 TAKE_PROFIT = 8
 
+# Replace in line 113 to choose between a BUY or SELL order
+BUY = mt5.ORDER_TYPE_BUY
+SELL = mt5.ORDER_TYPE_SELL
+ORDER_TYPE = BUY
+
 # connect to the trade account without specifying a password and a server
 mt5.initialize()
 
@@ -99,14 +104,20 @@ def trade():
 
                 #this represents 5% Equity. Minimum order is 0.01 BTC. Increase equity share if retcode = 10014
                 lot = float(round(((equity / 20) / current_buy_price), 2))
+                
                 # define stop loss and take profit
-                sl = price - (price * STOP_LOSS) / 100
-                tp = price + (price * TAKE_PROFIT) / 100
+                if ORDER_TYPE == BUY:
+                    sl = price - (price * STOP_LOSS) / 100
+                    tp = price + (price * TAKE_PROFIT) / 100
+                else:
+                    sl = price + (price * STOP_LOSS) / 100
+                    tp = price - (price * TAKE_PROFIT) / 100
+                    
                 request = {
                     'action': mt5.TRADE_ACTION_DEAL,
                     'symbol': CRYPTO,
                     'volume': lot,
-                    'type': mt5.ORDER_TYPE_BUY,
+                    'type': ORDER_TYPE,
                     'price': price,
                     'sl': sl,
                     'tp': tp,
